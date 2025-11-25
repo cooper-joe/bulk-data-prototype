@@ -3,6 +3,7 @@
   border-bottom: 1px solid var(--colors-grey400);
   background-color: var(--colors-white);
   height: 36px;
+  position: relative;
 }
 
 .row.odd {
@@ -13,9 +14,23 @@
   background-color: var(--colors-white);
 }
 
-.row:hover,
+.row:hover {
+  background-color: var(--colors-grey050);
+}
+
 .row.rowActive {
   background-color: var(--colors-grey050);
+}
+
+.row.rowActive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 1px 0 0 0 var(--colors-grey500),
+    inset -1px 0 0 0 var(--colors-grey500),
+    inset 0 1px 0 0 var(--colors-grey500),
+    inset 0 -1px 0 0 var(--colors-grey500);
 }
 
 .row:hover .cellReadOnly,
@@ -64,11 +79,17 @@
 
 .actionCell:hover {
   background-color: var(--colors-grey200);
+  box-shadow: inset -1px 0 0 0 var(--colors-grey500),
+    inset 0 1px 0 0 var(--colors-grey500),
+    inset 0 -1px 0 0 var(--colors-grey500);
 }
 
 .actionCell:active,
 .actionCellActive {
   background-color: var(--colors-grey300);
+  box-shadow: inset -1px 0 0 0 var(--colors-grey500),
+    inset 0 1px 0 0 var(--colors-grey500),
+    inset 0 -1px 0 0 var(--colors-grey500);
 }
 
 .textInput {

@@ -44,6 +44,7 @@ export const GridRow: React.FC<GridRowProps> = ({
   totalRows,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isActionHovered, setIsActionHovered] = React.useState(false);
   const buttonRef = React.useRef<HTMLButtonElement>(null!); // non-null assertion for DHIS2 Popover
 
   const handleCellChange = (columnId: string, value: any) => {
@@ -68,7 +69,7 @@ export const GridRow: React.FC<GridRowProps> = ({
   return (
     <div
       className={`${styles.row} ${index % 2 === 0 ? styles.even : styles.odd} ${
-        isMenuOpen ? styles.rowActive : ""
+        isMenuOpen || isActionHovered ? styles.rowActive : ""
       }`}
     >
       {columns.map((col) => (
@@ -113,6 +114,8 @@ export const GridRow: React.FC<GridRowProps> = ({
         className={`${styles.actionCell} ${
           isMenuOpen ? styles.actionCellActive : ""
         }`}
+        onMouseEnter={() => setIsActionHovered(true)}
+        onMouseLeave={() => setIsActionHovered(false)}
       >
         <button
           ref={buttonRef}
