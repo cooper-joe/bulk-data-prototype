@@ -19,3 +19,14 @@ body {
 button {
   font-family: inherit;
 }
+
+/* Fix double card/border on DHIS2 Popover + FlyoutMenu combination */
+/* The Popover wrapper adds its own card styling, but FlyoutMenu already has card styling */
+[data-popper-placement] > div,
+[data-popper-placement] > div > div:not([class*="menu"]) {
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}

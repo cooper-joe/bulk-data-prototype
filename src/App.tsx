@@ -34,6 +34,12 @@ const COLUMNS: Column[] = [
     width: "300px",
   },
   {
+    id: "notes",
+    label: "Notes",
+    type: "text",
+    width: "200px",
+  },
+  {
     id: "bcg",
     label: "BCG",
     type: "radio",
@@ -55,6 +61,7 @@ const INITIAL_DATA = [
     firstName: "Ayotunde",
     lastName: "Okeke",
     location: "",
+    notes: "",
     bcg: "Yes",
     bopc0: "Yes",
     bopv1: "Yes",
@@ -68,6 +75,7 @@ const INITIAL_DATA = [
     firstName: "Modou",
     lastName: "Otieno",
     location: "",
+    notes: "",
     bcg: "Yes",
     bopc0: "Yes",
     bopv1: "Yes",
@@ -81,6 +89,7 @@ const INITIAL_DATA = [
     firstName: "Nnamdi",
     lastName: "Temitope",
     location: "",
+    notes: "",
     bcg: "Yes",
     bopc0: "Yes",
     bopv1: "Yes",
@@ -94,6 +103,7 @@ const INITIAL_DATA = [
     firstName: "Haruna",
     lastName: "Idowu",
     location: "",
+    notes: "",
     bcg: "Yes",
     bopc0: "Yes",
     bopv1: "Yes",
@@ -107,6 +117,7 @@ const INITIAL_DATA = [
     firstName: "Oni",
     lastName: "Idowu",
     location: "",
+    notes: "",
     bcg: "Yes",
     bopc0: "Yes",
     bopv1: "Yes",
@@ -120,6 +131,7 @@ const INITIAL_DATA = [
     firstName: "Synabou",
     lastName: "Kamau",
     location: "",
+    notes: "",
     bcg: "Yes",
     bopc0: "Yes",
     bopv1: "Yes",
@@ -128,18 +140,66 @@ const INITIAL_DATA = [
     measles: "Yes",
     dptHepB: "Yes",
   },
+  {
+    id: "41256",
+    firstName: "Amina",
+    lastName: "Diallo",
+    location: "",
+    notes: "",
+    bcg: "No",
+    bopc0: "Yes",
+    bopv1: "Yes",
+    ipv: "Yes",
+    pcv: "Yes",
+    measles: "Yes",
+    dptHepB: "Yes",
+  },
+  {
+    id: "52341",
+    firstName: "Kofi",
+    lastName: "Mensah",
+    location: "",
+    notes: "",
+    bcg: "Yes",
+    bopc0: "No",
+    bopv1: "Yes",
+    ipv: "Yes",
+    pcv: "Yes",
+    measles: "Yes",
+    dptHepB: "Yes",
+  },
+  {
+    id: "63452",
+    firstName: "Fatou",
+    lastName: "Ndiaye",
+    location: "",
+    notes: "",
+    bcg: "Yes",
+    bopc0: "Yes",
+    bopv1: "No",
+    ipv: "Yes",
+    pcv: "Yes",
+    measles: "Yes",
+    dptHepB: "Yes",
+  },
+  {
+    id: "74563",
+    firstName: "Kwame",
+    lastName: "Asante",
+    location: "",
+    notes: "",
+    bcg: "Yes",
+    bopc0: "Yes",
+    bopv1: "Yes",
+    ipv: "No",
+    pcv: "Yes",
+    measles: "Yes",
+    dptHepB: "Yes",
+  },
 ];
 
 function App() {
   const [data, setData] = useState(INITIAL_DATA);
-
-  const handleAddRow = () => {
-    const newRow = COLUMNS.reduce((acc, col) => {
-      acc[col.id] = "";
-      return acc;
-    }, {} as any);
-    setData([...data, newRow]);
-  };
 
   return (
     <>
@@ -151,9 +211,9 @@ function App() {
           </div>
           <GridForm columns={COLUMNS} data={data} onChange={setData} />
         </div>
-        <button className={styles.addButton} onClick={handleAddRow}>
+        {/* <button className={styles.addButton} onClick={handleAddRow}>
           + Add row
-        </button>
+        </button> */}
       </div>
     </>
   );

@@ -99,8 +99,8 @@ export const GridRow: React.FC<GridRowProps> = ({
                   label={option}
                   value={option}
                   checked={data[col.id] === option}
-                  onChange={({ value }: { value: string }) =>
-                    handleCellChange(col.id, value)
+                  onChange={({ value }: { value?: string }) =>
+                    handleCellChange(col.id, value ?? "")
                   }
                   name={`${col.id}-${index}`}
                 />
