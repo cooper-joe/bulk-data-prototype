@@ -46,18 +46,28 @@ export const GridRow: React.FC<GridRowProps> = ({
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isActionHovered, setIsActionHovered] = React.useState(false);
   const buttonRef = React.useRef<HTMLButtonElement>(null!); // non-null assertion for DHIS2 Popover
+  const justClosedRef = React.useRef(false);
 
   const handleCellChange = (columnId: string, value: any) => {
     onChange({ ...data, [columnId]: value });
   };
 
-  const handleMenuOpen = () => {
-    setIsMenuOpen(true);
+  const handleMenuToggle = () => {
+    if (justClosedRef.current) {
+      justClosedRef.current = false;
+      return;
+    }
+    setIsMenuOpen((prev) => !prev);
   };
 
   const handleMenuClose = () => {
+    justClosedRef.current = true;
     setIsMenuOpen(false);
     setIsActionHovered(false);
+    // Reset the flag after the current event completes
+    setTimeout(() => {
+      justClosedRef.current = false;
+    }, 0);
   };
 
   const handleAction = (action: () => void) => {
@@ -117,12 +127,9 @@ export const GridRow: React.FC<GridRowProps> = ({
         }`}
         onMouseEnter={() => setIsActionHovered(true)}
         onMouseLeave={() => setIsActionHovered(false)}
+        onClick={handleMenuToggle}
       >
-        <button
-          ref={buttonRef}
-          className={styles.moreButton}
-          onClick={handleMenuOpen}
-        >
+        <button ref={buttonRef} className={styles.moreButton}>
           <IconMore16 />
         </button>
         {isMenuOpen && buttonRef.current && (
