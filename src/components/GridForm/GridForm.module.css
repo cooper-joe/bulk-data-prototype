@@ -1,0 +1,117 @@
+.gridContainer {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  font-size: 13px;
+  font-family: var(--font-family);
+  border-top: 1px solid var(--colors-grey400);
+}
+
+.headerRow {
+  display: flex;
+  background-color: var(--colors-grey200);
+  border-bottom: 1px solid var(--colors-grey400);
+  font-weight: 600;
+  color: var(--colors-grey700);
+}
+
+.headerCell {
+  padding: var(--spacers-dp8) var(--spacers-dp8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacers-dp8);
+  border-right: 1px solid var(--colors-grey400);
+  flex-shrink: 0;
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+.headerLabel {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.headerIcon {
+  flex-shrink: 0;
+  color: var(--colors-grey600);
+  display: flex;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+}
+
+.headerIconVisible {
+  visibility: visible;
+}
+
+.headerIconHidden {
+  visibility: hidden;
+}
+
+.headerCell:hover,
+.headerCellHighlighted {
+  background-color: var(--colors-grey300);
+  box-shadow: inset 1px 0 0 0 var(--colors-grey500),
+    inset -1px 0 0 0 var(--colors-grey500),
+    inset 0 1px 0 0 var(--colors-grey500);
+}
+
+.headerCellReadOnly {
+  cursor: default;
+}
+
+.headerCellReadOnly:hover {
+  background-color: var(--colors-grey200);
+  box-shadow: none;
+}
+
+.actionHeader {
+  width: 36px;
+  flex-shrink: 0;
+  border-right: none;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal styles */
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacers-dp16);
+  min-width: 320px;
+}
+
+.modalDescription {
+  margin: 0;
+  color: var(--colors-grey700);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.modalRadioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacers-dp12);
+  padding: var(--spacers-dp8) 0;
+}
+
+.modalCheckbox {
+  padding-top: var(--spacers-dp8);
+  border-top: 1px solid var(--colors-grey300);
+  margin-top: var(--spacers-dp8);
+}
+
+/* Undo alert container */
+.alertContainer {
+  position: fixed;
+  bottom: var(--spacers-dp24);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+}

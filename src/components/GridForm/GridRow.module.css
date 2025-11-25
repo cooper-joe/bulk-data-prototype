@@ -1,0 +1,136 @@
+.row {
+  display: flex;
+  border-bottom: 1px solid var(--colors-grey400);
+  background-color: var(--colors-white);
+  height: 36px;
+}
+
+.row.odd {
+  background-color: var(--colors-white);
+}
+
+.row.even {
+  background-color: var(--colors-white);
+}
+
+.row:hover,
+.row.rowActive {
+  background-color: var(--colors-grey050);
+}
+
+.row:hover .cellReadOnly,
+.row.rowActive .cellReadOnly {
+  background-color: var(--colors-grey200);
+}
+
+.cell {
+  padding: 0 var(--spacers-dp8);
+  border-right: 1px solid var(--colors-grey400);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-family: var(--font-family);
+}
+.cell:hover {
+  outline: 1px solid var(--colors-grey600);
+  outline-offset: -1px;
+}
+
+.cellHighlighted {
+  /* background-color: var(--colors-grey100); */
+  box-shadow: inset 1px 0 0 0 var(--colors-grey600),
+    inset -1px 0 0 0 var(--colors-grey600);
+}
+
+.row:last-child .cellHighlighted {
+  box-shadow: inset 1px 0 0 0 var(--colors-grey500),
+    inset -1px 0 0 0 var(--colors-grey500),
+    inset 0 -1px 0 0 var(--colors-grey500);
+}
+
+.cellText {
+  padding: 0;
+  align-items: stretch;
+}
+
+.actionCell {
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.actionCell:hover {
+  background-color: var(--colors-grey200);
+}
+
+.actionCell:active,
+.actionCellActive {
+  background-color: var(--colors-grey300);
+}
+
+.textInput {
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--spacers-dp8);
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-family: var(--font-family);
+  color: var(--colors-grey900);
+  box-sizing: border-box;
+}
+
+.textInput:focus {
+  box-shadow: inset 0 0 0 2px var(--colors-blue600);
+  background: var(--colors-white);
+  outline: none;
+}
+
+.radioGroup {
+  display: flex;
+  gap: var(--spacers-dp12);
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+.radioText {
+  font-size: 14px;
+  font-family: var(--font-family);
+}
+
+.moreButton {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--colors-grey600);
+  font-weight: bold;
+  font-family: var(--font-family);
+}
+
+.moreButton:hover {
+  color: var(--colors-grey900);
+}
+
+.cellReadOnly {
+  background-color: var(--colors-grey100);
+  cursor: default;
+}
+
+.cellReadOnly:hover {
+  outline: none;
+}
+
+.readOnlyValue {
+  font-size: 13px;
+  color: var(--colors-grey800);
+  user-select: text;
+}

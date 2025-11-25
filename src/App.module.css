@@ -1,0 +1,41 @@
+.container {
+  padding: 20px;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.card {
+  background: var(--colors-white);
+  border-top: 1px solid var(--colors-grey400);
+  border-left: 1px solid var(--colors-grey400);
+  border-right: 1px solid var(--colors-grey400);
+  border-radius: 3px;
+  width: fit-content;
+}
+
+.header {
+  padding: var(--spacers-dp12) var(--spacers-dp8);
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--colors-grey900);
+}
+
+.addButton {
+  margin-top: var(--spacers-dp12);
+  background: var(--colors-white);
+  border: 1px solid var(--colors-grey400);
+  padding: 6px var(--spacers-dp12);
+  border-radius: 3px;
+  cursor: pointer;
+  color: var(--colors-grey900);
+  font-weight: 500;
+  font-family: var(--font-family);
+}
+
+.addButton:hover {
+  background-color: var(--colors-blue100);
+}
