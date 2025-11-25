@@ -57,11 +57,11 @@ export const GridRow: React.FC<GridRowProps> = ({
 
   const handleMenuClose = () => {
     setIsMenuOpen(false);
+    setIsActionHovered(false);
   };
 
   const handleAction = (action: () => void) => {
     handleMenuClose();
-    setIsActionHovered(false);
     action();
   };
 
