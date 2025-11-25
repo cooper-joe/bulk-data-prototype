@@ -60,8 +60,9 @@ export const GridRow: React.FC<GridRowProps> = ({
   };
 
   const handleAction = (action: () => void) => {
-    action();
     handleMenuClose();
+    setIsActionHovered(false);
+    action();
   };
 
   const isLastRow = index === totalRows - 1;
