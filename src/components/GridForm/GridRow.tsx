@@ -6,14 +6,16 @@ import {
   MenuItem,
   Popover,
   IconMore16,
+  Tooltip,
 } from "@dhis2/ui";
 import styles from "./GridRow.module.css";
-import type { Column } from "./types";
+import type { Column, CellError } from "./types";
 
 interface GridRowProps {
   index: number;
   columns: Column[];
   data: any;
+  errors?: CellError[];
   onChange: (data: any) => void;
   highlightedColumnId: string | null;
   onViewForm: () => void;
@@ -21,6 +23,7 @@ interface GridRowProps {
   onCopyValues: () => void;
   onCopyToNextRow: () => void;
   onCopyToAllRows: () => void;
+  canPaste: boolean;
   onPasteValues: () => void;
   onClearRow: () => void;
   onRemoveRow: () => void;
@@ -31,6 +34,7 @@ export const GridRow: React.FC<GridRowProps> = ({
   index,
   columns,
   data,
+  errors = [],
   onChange,
   highlightedColumnId,
   onViewForm,
@@ -38,11 +42,15 @@ export const GridRow: React.FC<GridRowProps> = ({
   onCopyValues,
   onCopyToNextRow,
   onCopyToAllRows,
+  canPaste,
   onPasteValues,
   onClearRow,
   onRemoveRow,
   totalRows,
 }) => {
+  const getErrorForColumn = (columnId: string): CellError | undefined => {
+    return errors.find((error) => error.columnId === columnId);
+  };
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isActionHovered, setIsActionHovered] = React.useState(false);
   const buttonRef = React.useRef<HTMLButtonElement>(null!); // non-null assertion for DHIS2 Popover
@@ -83,44 +91,76 @@ export const GridRow: React.FC<GridRowProps> = ({
         isMenuOpen || isActionHovered ? styles.rowActive : ""
       }`}
     >
-      {columns.map((col) => (
-        <div
-          key={col.id}
-          className={`${styles.cell} ${
-            highlightedColumnId === col.id ? styles.cellHighlighted : ""
-          } ${col.type === "text" && !col.readOnly ? styles.cellText : ""} ${
-            col.readOnly ? styles.cellReadOnly : ""
-          }`}
-          style={{ width: col.width, minWidth: col.width }}
-        >
-          {col.readOnly ? (
-            <span className={styles.readOnlyValue}>{data[col.id] || ""}</span>
-          ) : col.type === "text" ? (
-            <input
-              type="text"
-              className={styles.textInput}
-              value={data[col.id] || ""}
-              onChange={(e) => handleCellChange(col.id, e.target.value)}
-            />
-          ) : col.type === "radio" ? (
-            <div className={styles.radioGroup}>
-              {col.options?.map((option) => (
-                <Radio
-                  dense
-                  key={option}
-                  label={option}
-                  value={option}
-                  checked={data[col.id] === option}
-                  onChange={({ value }: { value?: string }) =>
-                    handleCellChange(col.id, value ?? "")
-                  }
-                  name={`${col.id}-${index}`}
-                />
-              ))}
-            </div>
-          ) : null}
-        </div>
-      ))}
+      {columns.map((col) => {
+        const cellError = getErrorForColumn(col.id);
+        const hasError = !!cellError;
+
+        const cellElement = (tooltipProps?: {
+          onMouseOver: () => void;
+          onMouseOut: () => void;
+          onFocus: () => void;
+          onBlur: () => void;
+          ref: React.Ref<HTMLDivElement>;
+        }) => (
+          <div
+            key={col.id}
+            ref={tooltipProps?.ref}
+            onMouseOver={tooltipProps?.onMouseOver}
+            onMouseOut={tooltipProps?.onMouseOut}
+            onFocus={tooltipProps?.onFocus}
+            onBlur={tooltipProps?.onBlur}
+            tabIndex={hasError ? 0 : undefined}
+            className={`${styles.cell} ${
+              highlightedColumnId === col.id ? styles.cellHighlighted : ""
+            } ${col.type === "text" && !col.readOnly ? styles.cellText : ""} ${
+              col.readOnly ? styles.cellReadOnly : ""
+            } ${hasError ? styles.cellError : ""}`}
+            style={{ width: col.width, minWidth: col.width }}
+          >
+            {col.readOnly ? (
+              <span className={styles.readOnlyValue}>{data[col.id] || ""}</span>
+            ) : col.type === "text" ? (
+              <input
+                type="text"
+                className={`${styles.textInput} ${
+                  hasError ? styles.textInputError : ""
+                }`}
+                value={data[col.id] || ""}
+                onChange={(e) => handleCellChange(col.id, e.target.value)}
+              />
+            ) : col.type === "radio" ? (
+              <div className={styles.radioGroup}>
+                {col.options?.map((option) => (
+                  <Radio
+                    dense
+                    key={option}
+                    label={option}
+                    value={option}
+                    checked={data[col.id] === option}
+                    onChange={({ value }: { value?: string }) =>
+                      handleCellChange(col.id, value ?? "")
+                    }
+                    name={`${col.id}-${index}`}
+                  />
+                ))}
+              </div>
+            ) : null}
+          </div>
+        );
+
+        return hasError ? (
+          <Tooltip
+            key={col.id}
+            content={cellError.message}
+            placement="top"
+            openDelay={500}
+          >
+            {(props) => cellElement(props as any)}
+          </Tooltip>
+        ) : (
+          cellElement()
+        );
+      })}
       <div
         className={`${styles.actionCell} ${
           isMenuOpen ? styles.actionCellActive : ""
@@ -156,6 +196,7 @@ export const GridRow: React.FC<GridRowProps> = ({
 
               <MenuItem
                 label="Paste values"
+                disabled={!canPaste}
                 onClick={() => handleAction(onPasteValues)}
               />
               <MenuDivider />

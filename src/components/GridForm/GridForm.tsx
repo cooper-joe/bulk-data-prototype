@@ -18,18 +18,21 @@ import {
 } from "@dhis2/ui";
 import styles from "./GridForm.module.css";
 import { GridRow } from "./GridRow";
-import type { Column } from "./types";
+import type { Column, CellError } from "./types";
 
 interface GridFormProps {
   columns: Column[];
   data: any[];
   onChange: (data: any[]) => void;
+  /** Map of row index to array of cell errors for that row */
+  rowErrors?: Record<number, CellError[]>;
 }
 
 export const GridForm: React.FC<GridFormProps> = ({
   columns,
   data,
   onChange,
+  rowErrors = {},
 }) => {
   const [activeColumnId, setActiveColumnId] = React.useState<string | null>(
     null
@@ -53,6 +56,12 @@ export const GridForm: React.FC<GridFormProps> = ({
   const undoTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
+
+  // Virtual clipboard for copy/paste operations
+  const [copiedRowData, setCopiedRowData] = React.useState<Record<
+    string,
+    any
+  > | null>(null);
 
   const activeColumn = applyValueColumnId
     ? columns.find((col) => col.id === applyValueColumnId)
@@ -250,7 +259,7 @@ export const GridForm: React.FC<GridFormProps> = ({
             {!col.readOnly && (
               <span
                 className={`${styles.headerIcon} ${
-                  hoveredColumnId === col.id
+                  hoveredColumnId === col.id || activeColumnId === col.id
                     ? styles.headerIconVisible
                     : styles.headerIconHidden
                 }`}
@@ -350,6 +359,7 @@ export const GridForm: React.FC<GridFormProps> = ({
             index={index}
             columns={columns}
             data={row}
+            errors={rowErrors[index]}
             onChange={(updatedRow) => handleRowChange(index, updatedRow)}
             highlightedColumnId={highlightedColumnId}
             totalRows={data.length}
@@ -359,27 +369,21 @@ export const GridForm: React.FC<GridFormProps> = ({
               const editableData = columns.reduce((acc, col) => {
                 if (!col.readOnly) acc[col.id] = row[col.id];
                 return acc;
-              }, {} as any);
-              navigator.clipboard.writeText(JSON.stringify(editableData));
-              console.log("Copied values from row", index);
+              }, {} as Record<string, any>);
+              setCopiedRowData(editableData);
             }}
             onCopyToNextRow={() => handleCopyToNextRow(index)}
             onCopyToAllRows={() => handleCopyToAllRows(index)}
-            onPasteValues={async () => {
-              try {
-                const text = await navigator.clipboard.readText();
-                const pastedData = JSON.parse(text);
-                const newRow = { ...row };
-                columns.forEach((col) => {
-                  if (!col.readOnly && pastedData[col.id] !== undefined) {
-                    newRow[col.id] = pastedData[col.id];
-                  }
-                });
-                handleRowChange(index, newRow);
-                console.log("Pasted values to row", index);
-              } catch (e) {
-                console.error("Failed to paste values", e);
-              }
+            canPaste={!!copiedRowData}
+            onPasteValues={() => {
+              if (!copiedRowData) return;
+              const newRow = { ...row };
+              columns.forEach((col) => {
+                if (!col.readOnly && copiedRowData[col.id] !== undefined) {
+                  newRow[col.id] = copiedRowData[col.id];
+                }
+              });
+              handleRowChange(index, newRow);
             }}
             onClearRow={() => handleClearRow(index)}
             onRemoveRow={() => handleRemoveRow(index)}

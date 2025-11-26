@@ -7,3 +7,8 @@ export interface Column {
   readOnly?: boolean
 }
 
+export interface CellError {
+  columnId: string
+  message: string
+}
+

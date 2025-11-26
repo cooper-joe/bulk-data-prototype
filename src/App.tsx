@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CssVariables } from "@dhis2/ui";
 import { GridForm } from "./components/GridForm/GridForm";
-import type { Column } from "./components/GridForm/types";
+import type { Column, CellError } from "./components/GridForm/types";
 import styles from "./App.module.css";
 
 // Example data structure
@@ -198,6 +198,15 @@ const INITIAL_DATA = [
   },
 ];
 
+// Example errors for demonstration - remove in production
+const EXAMPLE_ERRORS: Record<number, CellError[]> = {
+  1: [{ columnId: "location", message: "This field is required" }],
+  3: [
+    { columnId: "notes", message: "Invalid characters detected" },
+    { columnId: "bcg", message: "Please select a value" },
+  ],
+};
+
 function App() {
   const [data, setData] = useState(INITIAL_DATA);
 
@@ -209,7 +218,12 @@ function App() {
           <div className={styles.header}>
             <h2>Form: Laboratory results</h2>
           </div>
-          <GridForm columns={COLUMNS} data={data} onChange={setData} />
+          <GridForm
+            columns={COLUMNS}
+            data={data}
+            onChange={setData}
+            rowErrors={EXAMPLE_ERRORS}
+          />
         </div>
         {/* <button className={styles.addButton} onClick={handleAddRow}>
           + Add row
