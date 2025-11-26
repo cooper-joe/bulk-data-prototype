@@ -7,9 +7,101 @@ import {
   Popover,
   IconMore16,
   Tooltip,
+  IconInfo16,
+  IconCopy16,
+  IconDelete16,
+  IconCross16,
+  IconList16,
 } from "@dhis2/ui";
 import styles from "./GridRow.module.css";
 import type { Column, CellError, RowError } from "./types";
+
+// Custom 16px icons for menu items
+const IconPaste16 = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+    <path d="M10 1H6C5.45 1 5 1.45 5 2V3H3C2.45 3 2 3.45 2 4V14C2 14.55 2.45 15 3 15H13C13.55 15 14 14.55 14 14V4C14 3.45 13.55 3 13 3H11V2C11 1.45 10.55 1 10 1ZM6 2H10V4H6V2ZM13 14H3V4H5V5H11V4H13V14Z" />
+    <path d="M5 8H11V9H5V8Z" />
+    <path d="M5 10.5H9V11.5H5V10.5Z" />
+  </svg>
+);
+
+const IconApplyNext16 = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+  >
+    <rect x="2.5" y="2.5" width="11" height="3" rx="0.5" strokeWidth="1" />
+    <rect
+      x="2.5"
+      y="10.5"
+      width="11"
+      height="3"
+      rx="0.5"
+      strokeWidth="1"
+      strokeOpacity="0.5"
+    />
+    <path
+      d="M8 6.5V9.5M5.5 8L8 10.5L10.5 8"
+      strokeWidth="1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const IconApplyAll16 = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+  >
+    <rect x="2.5" y="1.5" width="11" height="2" rx="0.5" strokeWidth="1" />
+    <rect
+      x="2.5"
+      y="7"
+      width="11"
+      height="2"
+      rx="0.5"
+      strokeWidth="1"
+      strokeOpacity="0.5"
+    />
+    <rect
+      x="2.5"
+      y="12.5"
+      width="11"
+      height="2"
+      rx="0.5"
+      strokeWidth="1"
+      strokeOpacity="0.5"
+    />
+    <path
+      d="M8 4V6M6 5L8 7L10 5"
+      strokeWidth="1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M8 9.5V11.5M6 10.5L8 12.5L10 10.5"
+      strokeWidth="1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeOpacity="0.5"
+    />
+    <path
+      d="M8 9.25L8 11.75M8 11.75L6 9.75M8 11.75L10 9.75"
+      stroke="currentColor"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+    />
+  </svg>
+);
 
 interface GridRowProps {
   index: number;
@@ -206,42 +298,50 @@ export const GridRow: React.FC<GridRowProps> = ({
           >
             <FlyoutMenu dense>
               <MenuItem
+                icon={<IconList16 />}
                 label="View form..."
                 onClick={() => handleAction(onViewForm)}
               />
               <MenuItem
                 label="About this person"
+                icon={<IconInfo16 />}
                 onClick={() => handleAction(onAboutPerson)}
               />
               <MenuDivider />
               <MenuItem
                 label="Copy all data values"
+                icon={<IconCopy16 />}
                 onClick={() => handleAction(onCopyValues)}
               />
 
               <MenuItem
                 label="Paste values"
+                icon={<IconPaste16 />}
                 disabled={!canPaste}
                 onClick={() => handleAction(onPasteValues)}
               />
               <MenuDivider />
               <MenuItem
                 label="Apply all data values to next row"
+                icon={<IconApplyNext16 />}
                 disabled={isLastRow}
                 onClick={() => handleAction(onCopyToNextRow)}
               />
               <MenuItem
                 label="Apply all data values to all rows"
+                icon={<IconApplyAll16 />}
                 onClick={() => handleAction(onCopyToAllRows)}
               />
               <MenuDivider />
               <MenuItem
                 destructive
+                icon={<IconCross16 />}
                 label="Clear all row values"
                 onClick={() => handleAction(onClearRow)}
               />
               <MenuItem
                 destructive
+                icon={<IconDelete16 />}
                 label="Remove row"
                 onClick={() => handleAction(onRemoveRow)}
               />
