@@ -165,14 +165,14 @@ export const GridForm: React.FC<GridFormProps> = ({
     const previousData = [...data.map((row) => ({ ...row }))];
     const sourceRow = data[index];
     const newData = data.map((row, i) => {
-      if (i === index) return row;
+      if (i <= index) return row; // Skip current row and rows above
       return columns.reduce((acc, col) => {
         acc[col.id] = col.readOnly ? row[col.id] : sourceRow[col.id];
         return acc;
       }, {} as any);
     });
     onChange(newData);
-    triggerUndoAlert(previousData, "Applied values to all rows.");
+    triggerUndoAlert(previousData, "Applied values to all rows below.");
   };
 
   const handleOpenApplyValueModal = (columnId: string) => {

@@ -322,14 +322,15 @@ export const GridRow: React.FC<GridRowProps> = ({
               />
               <MenuDivider />
               <MenuItem
-                label="Apply all data values to next row"
+                label="Apply values to next row"
                 icon={<IconApplyNext16 />}
                 disabled={isLastRow}
                 onClick={() => handleAction(onCopyToNextRow)}
               />
               <MenuItem
-                label="Apply all data values to all rows"
+                label="Apply values to all rows below"
                 icon={<IconApplyAll16 />}
+                disabled={isLastRow}
                 onClick={() => handleAction(onCopyToAllRows)}
               />
               <MenuDivider />
