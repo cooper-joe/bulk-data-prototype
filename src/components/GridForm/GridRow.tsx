@@ -9,13 +9,14 @@ import {
   Tooltip,
 } from "@dhis2/ui";
 import styles from "./GridRow.module.css";
-import type { Column, CellError } from "./types";
+import type { Column, CellError, RowError } from "./types";
 
 interface GridRowProps {
   index: number;
   columns: Column[];
   data: any;
   errors?: CellError[];
+  rowError?: RowError;
   onChange: (data: any) => void;
   highlightedColumnId: string | null;
   onViewForm: () => void;
@@ -35,6 +36,7 @@ export const GridRow: React.FC<GridRowProps> = ({
   columns,
   data,
   errors = [],
+  rowError,
   onChange,
   highlightedColumnId,
   onViewForm,
@@ -91,6 +93,29 @@ export const GridRow: React.FC<GridRowProps> = ({
         isMenuOpen || isActionHovered ? styles.rowActive : ""
       }`}
     >
+      {rowError && (
+        <Tooltip content={rowError.message} placement="right" openDelay={200}>
+          {({ onMouseOver, onMouseOut, ref }) => (
+            <div
+              ref={ref as React.Ref<HTMLDivElement>}
+              className={styles.rowErrorBadge}
+              onMouseOver={onMouseOver}
+              onMouseOut={onMouseOut}
+            >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect x="5" y="1" width="2" height="6" fill="white" />
+                <rect x="5" y="9" width="2" height="2" fill="white" />
+              </svg>
+            </div>
+          )}
+        </Tooltip>
+      )}
       {columns.map((col) => {
         const cellError = getErrorForColumn(col.id);
         const hasError = !!cellError;

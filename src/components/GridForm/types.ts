@@ -12,3 +12,7 @@ export interface CellError {
   message: string
 }
 
+export interface RowError {
+  message: string
+}
+

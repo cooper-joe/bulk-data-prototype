@@ -18,20 +18,23 @@ import {
 } from "@dhis2/ui";
 import styles from "./GridForm.module.css";
 import { GridRow } from "./GridRow";
-import type { Column, CellError } from "./types";
+import type { Column, CellError, RowError } from "./types";
 
 interface GridFormProps {
   columns: Column[];
   data: any[];
   onChange: (data: any[]) => void;
   /** Map of row index to array of cell errors for that row */
-  rowErrors?: Record<number, CellError[]>;
+  cellErrors?: Record<number, CellError[]>;
+  /** Map of row index to row-level error (when we don't know which cell) */
+  rowErrors?: Record<number, RowError>;
 }
 
 export const GridForm: React.FC<GridFormProps> = ({
   columns,
   data,
   onChange,
+  cellErrors = {},
   rowErrors = {},
 }) => {
   const [activeColumnId, setActiveColumnId] = React.useState<string | null>(
@@ -359,7 +362,8 @@ export const GridForm: React.FC<GridFormProps> = ({
             index={index}
             columns={columns}
             data={row}
-            errors={rowErrors[index]}
+            errors={cellErrors[index]}
+            rowError={rowErrors[index]}
             onChange={(updatedRow) => handleRowChange(index, updatedRow)}
             highlightedColumnId={highlightedColumnId}
             totalRows={data.length}
